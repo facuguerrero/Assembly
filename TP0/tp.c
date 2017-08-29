@@ -67,7 +67,8 @@ int es_capicua(char* string){
   char lower[strlen(string)];
   memset(lower, 0, sizeof(lower));
 
-  for(int i = 0; i <= strlen(string); i++){
+  int i;
+  for(i = 0; i <= strlen(string); i++){
     lower[i] = tolower(string[i]);
   }
   /*Verificamos si es capicua*/
@@ -86,7 +87,8 @@ int palabras_en_linea(char* string, char* array_strings){
     int words = 0;
     char new[100];
 
-    for(int i = 0; i <= len; i++){
+    int i, j;
+    for(i = 0; i <= len; i++){
   	     int a = string[i];
          if( a>47 && a<58 ) continue;
          if( (a>64 && a<91) || (a > 96 && a<123) ) continue;
@@ -95,12 +97,12 @@ int palabras_en_linea(char* string, char* array_strings){
        //Si estamos aca es porque es un caracter que quivale al espacio.
        memset(new, 0, sizeof(new));
 
-       for(int j = 0; j < (i - init); j++){
+       for(j = 0; j < (i - init); j++){
           new[j] = string[init + j];
        }
 
        if(es_capicua(new)){
-          for(int j = 0; j < (i - init); j++){
+          for(j = 0; j < (i - init); j++){
               array_strings[cant] = new[j];
               cant++;
           }
