@@ -2,24 +2,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#include <argp.h>
+#include <unistd.h>
+#include <getopt.h>
 
 #define ARRAY_SIZE 1024
 #define INPUT_SIZE 1024
-
-/* Funciones y constantes para el procesamiento de flags*/
-const char* argp_program_version = "tp0 [Guerrero, Schapira, De Rosa] 0.1";
-
-/* Informacion a mostrar en --help*/
-static char doc[] = "\nOptions: \vExample:\n\ttp0 -i ~/input -o ~/output";
-
-/* Opciones agregadas a las basicas */
-static struct argp_option options[] = {
-  {"input",  'i', "PATH", 0, "Location of the input file."},
-  {"output",   'o', "PATH",  0, "Location of the output file." },
-
-  { 0 }
-};
 
 /* Tipo de argumentos esperados */
 struct arguments{
@@ -27,26 +14,21 @@ struct arguments{
   char* input_file;             /* file arg to '--input' */
 };
 
-/* Parseo de una opcion */
-static error_t parse_opt(int key, char *arg, struct argp_state *state) {
-  /* Obtenemos el argumento de entrada a partir de argp_state */
-  struct arguments *arguments = state->input;
-
-  switch (key) {
-    case 'o':
-      arguments->output_file = arg;
-      break;
-    case 'i':
-      arguments->input_file = arg;
-      break;
-    default:
-      return ARGP_ERR_UNKNOWN;
-    }
-  return 0;
+void print_help(){
+  printf("Usage:\n \
+  \ttp0 -h\n \
+  \ttp0 -v\n \
+  \ttp0 [options]\nOptions:\n \
+  \t-v, --version    \tPrint version and quit.\n \
+  \t-h, --help       \tPrint help and quit.\n \
+  \t-i, --input      \tPath to input file.\n \
+  \t-o, --output     \tPath to output file.\nExamples:\n \
+  \ttp0 -i ~/input -o ~/output\n");
 }
 
-/* Parser de argumentos */
-static struct argp argp = { options, parse_opt, 0, doc };
+void print_version(){
+  printf("tp0 [Guerrero - Schapira - De Rosa] 0.5\n");
+}
 
 /* Funcion que invierte una cadena de caracteres */
 char* strrev(char *str){
@@ -118,20 +100,68 @@ int palabras_en_linea(char* string, char* array_strings){
 }
 
 int main(int argc, char* argv[]){
-  /* Parte de los flags */
+    /* Lectura de entrada */
+    /* Default values. */
+    struct arguments arguments;
+    arguments.output_file = NULL;
+    arguments.input_file = NULL;
 
-  struct arguments arguments;
+    int c;
+    while (1){
+      static struct option long_options[] =
+        {
+          /* These options don’t set a flag.
+             We distinguish them by their indices. */
+          {"help", no_argument, 0, 'h'},
+          {"version", no_argument, 0, 'v'},
+          {"input",  required_argument, 0, 'i'},
+          {"output",    required_argument, 0, 'o'},
+          {0, 0, 0, 0}
+        };
+      /* getopt_long stores the option index here. */
+      int option_index = 0;
 
-  /* Default values. */
-  arguments.output_file = NULL;
-  arguments.input_file = NULL;
+      c = getopt_long (argc, argv, "hvc:i:o:", long_options, &option_index);
 
-  /* Parse our arguments; every option seen by parse_opt will be
-     reflected in arguments. */
-  argp_parse (&argp, argc, argv, 0, 0, &arguments);
+      /* Detect the end of the options. */
+      if (c == -1) break;
+
+      switch (c){
+        case 0:
+          /* If this option set a flag, do nothing else now. */
+          if (long_options[option_index].flag != 0) break;
+          printf ("option %s", long_options[option_index].name);
+          if (optarg) printf (" with arg %s", optarg);
+          printf ("\n");
+          break;
+        case 'h':
+          print_help();
+          exit(0);
+          break;
+        case 'v':
+          print_version();
+          exit(0);
+          break;
+        case 'i':
+          arguments.input_file = optarg;
+          break;
+        case 'o':
+          arguments.output_file = optarg;
+          break;
+        case '?':
+          break;
+        default:
+          abort ();
+        }
+    }
+    /* Print any remaining command line arguments (not options). */
+    if (optind < argc){
+        printf ("non-option ARGV-elements: ");
+        while (optind < argc) printf ("%s ", argv[optind++]);
+        putchar ('\n');
+    }
 
   /*Procesamiento de palabra capicua*/
-
   char input[INPUT_SIZE];
   char array[ARRAY_SIZE];
   memset(array, 0, sizeof(array));
