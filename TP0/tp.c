@@ -8,12 +8,6 @@
 #define ARRAY_SIZE 1024
 #define INPUT_SIZE 1024
 
-/* Tipo de argumentos esperados */
-struct arguments{
-  char* output_file;            /* file arg to ‘--output’ */
-  char* input_file;             /* file arg to '--input' */
-};
-
 void print_help(){
   printf("Usage:\n \
   \ttp0 -h\n \
@@ -46,13 +40,17 @@ char* strrev(char *str){
 /*Se hace una copia de la palabra recibida, se la invierte y se verifica
 si son iguales o no */
 int es_capicua(char* string){
+  printf(" "); //Debugging
+  /* Si tiene un solo caracter no se considera*/
+  int len = strlen(string);
+  if (len <= 1) return 0;
   /*Pasamos a minuscula los caracteres*/
   char lower[strlen(string)];
   memset(lower, 0, sizeof(lower));
 
   int i;
-  for(i = 0; i <= strlen(string); i++){
-    lower[i] = tolower(string[i]);
+  for(i = 0; i < len; i++){
+    lower[i] = tolower((unsigned char)string[i]);
   }
   /*Verificamos si es capicua*/
   char copy[strlen(lower)];
@@ -71,11 +69,12 @@ int palabras_en_linea(char* string, char* array_strings){
     char new[100];
 
     int i, j;
-    for(i = 0; i <= len; i++){
-  	     int a = string[i];
-         if( a>47 && a<58 ) continue;
-         if( (a>64 && a<91) || (a > 96 && a<123) ) continue;
-         if(a == 95 || a==45) continue;
+    for(i = 0; i < len; i++){
+  	   int a = string[i];
+
+       if( a>47 && a<58 ) continue;
+       if( (a>64 && a<91) || (a > 96 && a<123) ) continue;
+       if(a == 95 || a==45) continue;
 
        //Si estamos aca es porque es un caracter que quivale al espacio.
        memset(new, 0, sizeof(new));
@@ -100,12 +99,10 @@ int palabras_en_linea(char* string, char* array_strings){
 }
 
 int main(int argc, char* argv[]){
-    /* Lectura de entrada */
-    /* Default values. */
-    struct arguments arguments;
-    arguments.output_file = NULL;
-    arguments.input_file = NULL;
-
+    /* Archivos */
+    char* output_file = NULL;
+    char* input_file = NULL;
+    /* Procesamiento de parametros de entrada*/
     int c;
     while (1){
       static struct option long_options[] =
@@ -143,30 +140,30 @@ int main(int argc, char* argv[]){
           exit(0);
           break;
         case 'i':
-          arguments.input_file = optarg;
+          input_file = optarg;
           break;
         case 'o':
-          arguments.output_file = optarg;
+          output_file = optarg;
           break;
         case '?':
           break;
         default:
           abort ();
-        }
-    }
-    /* Print any remaining command line arguments (not options). */
-    if (optind < argc){
-        printf ("non-option ARGV-elements: ");
-        while (optind < argc) printf ("%s ", argv[optind++]);
-        putchar ('\n');
-    }
+      }
+  }
+  /* Print any remaining command line arguments (not options). */
+  if (optind < argc){
+      printf ("non-option ARGV-elements: ");
+      while (optind < argc) printf ("%s ", argv[optind++]);
+      putchar ('\n');
+  }
 
   /*Procesamiento de palabra capicua*/
   char input[INPUT_SIZE];
   char array[ARRAY_SIZE];
   memset(array, 0, sizeof(array));
 
-  FILE* entrada = fopen(arguments.input_file, "r");
+  FILE* entrada = fopen(input_file, "r");
 
   //Si no hay archivo, pedimos por teclado.
   if(!entrada){
@@ -174,10 +171,7 @@ int main(int argc, char* argv[]){
       fgets(input, INPUT_SIZE, stdin);
 
       palabras_en_linea(input, array);
-  }
-
-  //Si hay, procesamos las lineas.
-  else{
+  } else { //Si hay, procesamos las lineas.
     while( !feof(entrada) ){
       char ent[INPUT_SIZE];
       memset(ent, 0, sizeof(ent));
@@ -187,7 +181,6 @@ int main(int argc, char* argv[]){
       if(ent[0] == '\0'){
         continue;
       }
-
       /*Proceso una linea*/
       char aux[INPUT_SIZE];
       memset(aux, 0, sizeof(aux));
@@ -200,15 +193,13 @@ int main(int argc, char* argv[]){
 
   /*MANEJAMOS LA SALIDA*/
 
-  FILE* salida = fopen(arguments.output_file, "w");
+  FILE* salida = fopen(output_file, "w");
 
   //Si no hay archivo, imprimimos por pantalla
   if(!salida){
-      printf("Palabras capicua:\n%s", array);
-  }
-
-  //Si hay archivo, lo guardamos en el
-  else{
+    printf("\nPalabras capicua:\n%s", array);
+  } else { //Si hay archivo, lo guardamos en el
+    printf("\n");
     fputs( array, salida);
     fclose(salida);
   }
