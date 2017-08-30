@@ -1,12 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <signal.h>
+#include <stdbool.h>
 #include <ctype.h>
 #include <unistd.h>
 #include <getopt.h>
 
 #define ARRAY_SIZE 1024
 #define INPUT_SIZE 1024
+#define SALIDA 10
 
 void print_help(){
   printf("Usage:\n \
@@ -40,22 +43,35 @@ char* strrev(char *str){
 /*Se hace una copia de la palabra recibida, se la invierte y se verifica
 si son iguales o no */
 int es_capicua(char* string){
-  printf(" "); //Debugging
+  //printf(" "); //Debugging
+
   /* Si tiene un solo caracter no se considera*/
   int len = strlen(string);
   if (len <= 1) return 0;
+
   /*Pasamos a minuscula los caracteres*/
-  char lower[strlen(string)];
+  char lower[100];
   memset(lower, 0, sizeof(lower));
 
   int i;
+  char c;
   for(i = 0; i < len; i++){
-    lower[i] = tolower((unsigned char)string[i]);
+    c = string[i];
+    lower[i] = tolower((unsigned char)c);
   }
+
+  //printf("Ent: %s \n", string );
+  //printf("Min: %s \n",lower );
+
   /*Verificamos si es capicua*/
-  char copy[strlen(lower)];
+  char copy[100];
+  memset(copy, 0, sizeof(copy));
+
   strcpy(copy, lower);
   strrev(copy);
+
+  //printf("Rev: %s \n", copy);
+
   if(!strcmp(lower, copy) && strlen(lower) > 1 ) return 1;
   return 0;
 }
@@ -82,6 +98,8 @@ int palabras_en_linea(char* string, char* array_strings){
        for(j = 0; j < (i - init); j++){
           new[j] = string[init + j];
        }
+
+       //printf("%s \n",new);
 
        if(es_capicua(new)){
           for(j = 0; j < (i - init); j++){
@@ -167,11 +185,18 @@ int main(int argc, char* argv[]){
 
   //Si no hay archivo, pedimos por teclado.
   if(!entrada){
+    //bool exito = true;
+    //while( exito ){
       printf("Ingrese la oracion a evaluar:\n");
       fgets(input, INPUT_SIZE, stdin);
 
+
       palabras_en_linea(input, array);
-  } else { //Si hay, procesamos las lineas.
+    //}
+  }
+
+  else { //Si hay, procesamos las lineas.
+
     while( !feof(entrada) ){
       char ent[INPUT_SIZE];
       memset(ent, 0, sizeof(ent));
