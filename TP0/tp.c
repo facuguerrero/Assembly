@@ -65,7 +65,7 @@ int es_capicua(char* string){
 }
 
 /*Chequea que palabras de la linea recibida son capicua*/
-int palabras_en_linea(char* string, char* array_strings){
+void palabras_en_linea(char* string, char* array_strings){
   	int len = strlen(string);
   	int init = 0;
   	int cant = 0;
@@ -99,7 +99,6 @@ int palabras_en_linea(char* string, char* array_strings){
        init = i + 1;
     }
 
-  	return words;
 }
 
 int main(int argc, char* argv[]){
@@ -171,14 +170,18 @@ int main(int argc, char* argv[]){
 
   //Si no hay archivo, pedimos por teclado.
   if(!entrada){
-    //bool exito = true;
-    //while( exito ){
-      printf("Ingrese la oracion a evaluar:\n");
+    bool run = true;
+    while( run ){
+      printf("Ingrese la oracion a evaluar o exit para salir:\n");
       fgets(input, INPUT_SIZE, stdin);
 
-
-      palabras_en_linea(input, array);
-    //}
+      if(!strcmp(input, "exit\n")){
+          run = false;
+      }
+      else{
+          palabras_en_linea(input, array);
+      }
+    }
   }
 
   else { //Si hay, procesamos las lineas.
