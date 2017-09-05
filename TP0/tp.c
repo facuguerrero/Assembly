@@ -65,7 +65,7 @@ int es_capicua(char* string){
 }
 
 /*Chequea que palabras de la linea recibida son capicua*/
-void palabras_en_linea(char* string, char* array_strings){
+int palabras_en_linea(char* string, char* array_strings){
   	int len = strlen(string);
   	int init = 0;
   	int cant = 0;
@@ -99,6 +99,13 @@ void palabras_en_linea(char* string, char* array_strings){
        init = i + 1;
     }
 
+  	return words;
+}
+
+bool check_continuar(char* input){
+  strtok(input, "\n");
+  if (strcmp(input, "salir")) return true;
+  return false;
 }
 
 int main(int argc, char* argv[]){
@@ -164,28 +171,38 @@ int main(int argc, char* argv[]){
   /*Procesamiento de palabra capicua*/
   char input[INPUT_SIZE];
   char array[ARRAY_SIZE];
-  memset(array, 0, sizeof(array));
 
   FILE* entrada = fopen(input_file, "r");
+  FILE* salida = fopen(output_file, "w");
 
   //Si no hay archivo, pedimos por teclado.
   if(!entrada){
-    bool run = true;
-    while( run ){
-      printf("Ingrese la oracion a evaluar o exit para salir:\n");
+    bool exito = true;
+    while( exito ){
+      //Se recibe la oracion a evaluar
+      memset(array, 0, sizeof(array));
+      memset(input, 0, sizeof(input));
+      printf("Ingrese la oracion a evaluar:\n");
       fgets(input, INPUT_SIZE, stdin);
 
-      if(!strcmp(input, "exit\n")){
-          run = false;
+      palabras_en_linea(input, array);
+      //Salida del programa para cada linea
+      if(!salida){ //Si no hay archivo, imprimimos por pantalla
+        printf("Palabras capicua:\n%s", array);
+      } else { //Si hay archivo, lo guardamos en él
+        fputs( array, salida);
       }
-      else{
-          palabras_en_linea(input, array);
-      }
+
+      //Verificamos si se quiere seguir o no
+      printf("¿Desea salir?['salir' para cortar la ejecucion]\n");
+      memset(input, 0, sizeof(input));
+      fgets(input, INPUT_SIZE, stdin);
+      exito = check_continuar(input);
     }
   }
 
   else { //Si hay, procesamos las lineas.
-
+    memset(array, 0, sizeof(array));
     while( !feof(entrada) ){
       char ent[INPUT_SIZE];
       memset(ent, 0, sizeof(ent));
@@ -203,19 +220,16 @@ int main(int argc, char* argv[]){
       strcat(array, aux);
     }
     fclose(entrada);
+
+    //Salida del programa
+    if(!salida){ //Si no hay archivo, imprimimos por pantalla
+      printf("Palabras capicua:\n%s", array);
+    } else { //Si hay archivo, lo guardamos en él
+      fputs( array, salida);
+    }
   }
 
-  /*MANEJAMOS LA SALIDA*/
-
-  FILE* salida = fopen(output_file, "w");
-
-  //Si no hay archivo, imprimimos por pantalla
-  if(!salida){
-    printf("Palabras capicua:\n%s", array);
-  } else { //Si hay archivo, lo guardamos en él
-    fputs( array, salida);
-    fclose(salida);
-  }
+  if (salida) fclose(salida);
 
   return 0;
 }
