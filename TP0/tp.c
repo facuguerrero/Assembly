@@ -57,6 +57,7 @@ int es_capicua(char* string){
 
   /*Verificamos si es capicua*/
   char copy[100];
+
   memset(copy, 0, sizeof(copy));
   strcpy(copy, lower);
   strrev(copy);
@@ -128,7 +129,7 @@ int main(int argc, char* argv[]){
       /* getopt_long stores the option index here. */
       int option_index = 0;
 
-      c = getopt_long (argc, argv, "hvc:i:o:", long_options, &option_index);
+      c = getopt_long(argc, argv, "hvc:i:o:", long_options, &option_index);
 
       /* Detect the end of the options. */
       if (c == -1) break;
@@ -158,14 +159,14 @@ int main(int argc, char* argv[]){
         case '?':
           break;
         default:
-          abort ();
+          abort();
       }
   }
   /* Print any remaining command line arguments (not options). */
   if (optind < argc){
       printf ("non-option ARGV-elements: ");
-      while (optind < argc) printf ("%s ", argv[optind++]);
-      putchar ('\n');
+      while(optind < argc) printf("%s ", argv[optind++]);
+      putchar('\n');
   }
 
   /*Procesamiento de palabra capicua*/
@@ -179,9 +180,11 @@ int main(int argc, char* argv[]){
   if(!entrada){
     bool exito = true;
     while( exito ){
+
       //Se recibe la oracion a evaluar
       memset(array, 0, sizeof(array));
       memset(input, 0, sizeof(input));
+
       printf("Ingrese la oracion a evaluar:\n");
       fgets(input, INPUT_SIZE, stdin);
 
@@ -189,7 +192,8 @@ int main(int argc, char* argv[]){
       //Salida del programa para cada linea
       if(!salida){ //Si no hay archivo, imprimimos por pantalla
         printf("Palabras capicua:\n%s", array);
-      } else { //Si hay archivo, lo guardamos en él
+      }
+      else { //Si hay archivo, lo guardamos en él
         fputs( array, salida);
       }
 
@@ -199,9 +203,7 @@ int main(int argc, char* argv[]){
       fgets(input, INPUT_SIZE, stdin);
       exito = check_continuar(input);
     }
-  }
-
-  else { //Si hay, procesamos las lineas.
+  } else { //Si hay, procesamos las lineas.
     memset(array, 0, sizeof(array));
     while( !feof(entrada) ){
       char ent[INPUT_SIZE];
