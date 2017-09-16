@@ -10,8 +10,10 @@
 #define DEFAULT_INPUT stdin
 #define DEFAULT_OUTPUT stdout
 
-#define SIZE_INC 256
-#define INIT_SIZE 1024
+#define SIZE_INC 64
+#define INIT_SIZE 256
+#define INIT_WORD_SIZE 128
+#define WORD_SIZE_INC 32
 
 #define ALLOC_ERROR "An error ocurred while allocating memory! Error: "
 #define REALLOC_ERROR "An error ocurred while reallocating memory! Error: "
@@ -125,8 +127,13 @@ char* read_input(FILE* fp, size_t size){
   }
   //Fin de linea
   string[len++] = '\0';
-
-  return realloc(string, sizeof(char)*len); //Usamos solo la memoria necesaria!
+  //Usamos solo la memoria necesaria!
+  string = realloc(string, sizeof(char)*len);
+  if (!string){
+    printf("%s%s\n", REALLOC_ERROR, strerror(errno));
+    return NULL;
+  }
+  return string;
 }
 
 int write_result(FILE* fp, char* result){
@@ -245,8 +252,13 @@ char* get_palindromes(char* string){
     init = i + 1;
   }
   free(new);
-
-  return realloc(return_array, sizeof(char)*cant);
+  //Usamos solo la memoria necesaria
+  return_array = realloc(return_array, sizeof(char)*cant);
+  if (!return_array){
+    printf("%s%s\n", REALLOC_ERROR, strerror(errno));
+    return NULL;
+  }
+  return return_array;
 }
 
 bool is_palindrome(char* string){
@@ -257,20 +269,28 @@ bool is_palindrome(char* string){
   /*Analizamos la palabra*/
   bool result = false;
   /*Pasamos a minuscula los caracteres*/
-  char* lower = malloc(sizeof(char)*len);
+  int size = INIT_WORD_SIZE;
+  char* lower = malloc(sizeof(char)*size);
   if (!lower){
     printf("%s%s\n", ALLOC_ERROR, strerror(errno));
     return false;
   }
-  memset(lower, 0, sizeof(char)*len);
+  memset(lower, 0, sizeof(char)*size);
   //Pasamos a minuscula
   int i;
   for(i = 0; i < len; i++){
+    if (i == size){
+      lower = realloc(lower, sizeof(char)*(size += WORD_SIZE_INC) );
+      if (!lower){//Control de error
+        printf("%s%s\n", REALLOC_ERROR, strerror(errno));
+        return false;
+      }
+    }
     lower[i] = tolower((unsigned char)string[i]);
   }
   lower[i] = '\0'; //Fin de cadena
   /*Verificamos si es capicua*/
-  char* copy = malloc(sizeof(char)*len);
+  char* copy = malloc(sizeof(char)*size);
   if (!copy){
     printf("%s%s\n", ALLOC_ERROR, strerror(errno));
     free(lower);
