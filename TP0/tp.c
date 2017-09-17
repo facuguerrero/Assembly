@@ -24,7 +24,7 @@ void print_help(){
 }
 
 void print_version(){
-  printf("tp0 [Guerrero - Schapira - De Rosa] 0.5\n");
+  printf("tp0 [Guerrero - Schapira - De Rosa] 0.8\n");
 }
 
 /* Funcion que invierte una cadena de caracteres */

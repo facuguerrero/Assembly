@@ -6,6 +6,7 @@
 #include <ctype.h>
 #include <unistd.h>
 #include <errno.h>
+#include <getopt.h>
 
 #define DEFAULT_INPUT stdin
 #define DEFAULT_OUTPUT stdout
@@ -23,10 +24,14 @@
 #define DEFAULT_OUTPUT_MESSAGE "Output file is now stdout."
 #define RESULT_WRITING_ERROR "An error ocurred while writing the result! Error: "
 #define PALINDROME_ERROR_MESSAGE "An error ocurred while checking for palindromes!"
+#define ARGUMENTS_ERROR_MESSAGE "An error ocurred while processing the arguments!"
+
+#define END_PROGRAM 8 //Parametros de entrada
 
 #define READING_ERROR 1
 #define WRITING_ERROR 2
 #define PALINDROME_ERROR 3
+#define BAD_ARGUMENTS 4
 
 #define FAIL 1
 #define SUCCESS 0
@@ -67,11 +72,35 @@ char* get_palindromes(char* string);
  * @param string: cadena a analizar
  * @return: True | False*/
 bool is_palindrome(char* string);
+/*Imprime por consola la informacion de los comandos por consola y el
+uso del programa.*/
+void print_help();
+/*Imprime por consola la version del programa*/
+void print_version();
+/*Procesa los parametros de entrada del programa y almacena los paths
+correspondientes en los parametros de la funcion.
+ * @param argc: Cantidad de argumentos del programa.
+ * @param argv: Vector de argumentos del programa.
+ * @param input_file: Puntero al string donde se guarda el path de input.
+ * @param output_file: Puntero al string donde se guarda el path de output.
+ * @return: SUCCESS | BAD_ARGUMENTS.*/
+int process_params(int argc, char** argv, char** input_file, char** output_file);
 
 int main(int argc, char** argv){
-  //Esto hay que reemplazarlo por los args
-  FILE* input_fp = open_input(argv[1]);
-  FILE* output_fp = open_output(argv[2]);
+  /* Archivos */
+  char* output_file = NULL;
+  char* input_file = NULL;
+  /* Procesamiento de parametros de entrada*/
+  int processing = process_params(argc, argv, &input_file, &output_file);
+  if (processing != SUCCESS){
+    if (processing == BAD_ARGUMENTS){
+      printf("%s!\n", ARGUMENTS_ERROR_MESSAGE);
+      return BAD_ARGUMENTS;
+    } return SUCCESS;
+  }
+  //Apertura de archivos
+  FILE* input_fp = open_input(input_file);
+  FILE* output_fp = open_output(output_file);
   //Lectura del archivo
   char* input_string = read_input(input_fp, INIT_SIZE);
   if (!input_string){
@@ -84,8 +113,9 @@ int main(int argc, char** argv){
   if (!result_string){
     printf("%s\n", PALINDROME_ERROR_MESSAGE);
     close_files(input_fp, output_fp);
-    if (result_string) free(result_string);
     return PALINDROME_ERROR;
+  } else if (!strcmp(result_string, "\n")){ //Es el caso del archivo vacio!
+    return SUCCESS;
   }
   //Escritura del resultado
   int written = write_result(output_fp, result_string);
@@ -152,8 +182,10 @@ FILE* open_input(char* path){
   FILE* input_fp = fopen(path, "r");
   //En caso de error, se notifica y se define stdin como input_fp
   if (!input_fp){
-    printf("%s%s\n", INPUT_OPEN_ERROR, strerror(errno));
-    printf("%s\n\n", DEFAULT_INPUT_MESSAGE);
+    if (path){
+      printf("%s%s\n", INPUT_OPEN_ERROR, strerror(errno));
+      printf("%s\n\n", DEFAULT_INPUT_MESSAGE);
+    }
     input_fp = DEFAULT_INPUT;
   }
   return input_fp;
@@ -164,8 +196,10 @@ FILE* open_output(char* path){
   FILE* output_fp = fopen(path, "w");
   //En caso de error, se notifica y se define stdout como output_fp
   if (!output_fp){
-    printf("%s%s\n", OUTPUT_OPEN_ERROR, strerror(errno));
-    printf("%s\n\n", DEFAULT_OUTPUT_MESSAGE);
+    if (path){
+      printf("%s%s\n", OUTPUT_OPEN_ERROR, strerror(errno));
+      printf("%s\n\n", DEFAULT_OUTPUT_MESSAGE);
+    }
     output_fp = DEFAULT_OUTPUT;
   }
   return output_fp;
@@ -190,6 +224,7 @@ char* strrev(char *str){
 
 char* get_palindromes(char* string){
   int len = strlen(string);
+  if (len < 1) return "\n";
   int init = 0;
   int cant = 0;
   //Arreglo donde se guardan las palabras individuales
@@ -251,6 +286,7 @@ char* get_palindromes(char* string){
     }
     init = i + 1;
   }
+  return_array[cant++] = '\0';
   free(new);
   //Usamos solo la memoria necesaria
   return_array = realloc(return_array, sizeof(char)*cant);
@@ -305,4 +341,78 @@ bool is_palindrome(char* string){
   free(copy);
 
   return result;
+}
+
+int process_params(int argc, char** argv, char** input_file, char** output_file){
+  int c;
+  while (1){
+    static struct option long_options[] =
+      {
+        /* These options don’t set a flag.
+           We distinguish them by their indices. */
+        {"help", no_argument, 0, 'h'},
+        {"version", no_argument, 0, 'v'},
+        {"input",  required_argument, 0, 'i'},
+        {"output",    required_argument, 0, 'o'},
+        {0, 0, 0, 0}
+      };
+      /* getopt_long stores the option index here. */
+      int option_index = 0;
+
+      c = getopt_long(argc, argv, "hvc:i:o:", long_options, &option_index);
+
+      /* Detect the end of the options. */
+      if (c == -1) break;
+
+      switch (c){
+        case 0:
+          /* If this option set a flag, do nothing else now. */
+          if (long_options[option_index].flag != 0) break;
+          printf ("option %s", long_options[option_index].name);
+          if (optarg) printf (" with arg %s", optarg);
+          printf ("\n");
+          break;
+        case 'h':
+          print_help();
+          return END_PROGRAM;
+          break;
+        case 'v':
+          print_version();
+          return END_PROGRAM;
+          break;
+        case 'i':
+          *input_file = optarg;
+          break;
+        case 'o':
+          *output_file = optarg;
+          break;
+        case '?':
+          break;
+        default:
+          return BAD_ARGUMENTS;
+      }
+  }
+  /* Print any remaining command line arguments (not options). */
+  if (optind < argc){
+      printf ("non-option ARGV-elements: ");
+      while(optind < argc) printf("%s ", argv[optind++]);
+      putchar('\n');
+  }
+  return SUCCESS;
+}
+
+void print_help(){
+  printf("Usage:\n \
+  \ttp0 -h\n \
+  \ttp0 -v\n \
+  \ttp0 [options]\nOptions:\n \
+  \t-v, --version    \tPrint version and quit.\n \
+  \t-h, --help       \tPrint help and quit.\n \
+  \t-i, --input      \tPath to input file.\n \
+  \t-o, --output     \tPath to output file.\nExamples:\n \
+  \ttp0 -i ~/input -o ~/output\n");
+}
+
+void print_version(){
+  printf("tp0 [Guerrero - Schapira - De Rosa] v0.8\n");
 }
