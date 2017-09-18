@@ -32,6 +32,8 @@
 #define WRITING_ERROR 2
 #define PALINDROME_ERROR 3
 #define BAD_ARGUMENTS 4
+#define BAD_INPUT_PATH 5
+#define BAD_OUTPUT_PATH 6
 
 #define FAIL 1
 #define SUCCESS 0
@@ -93,14 +95,19 @@ int main(int argc, char** argv){
   /* Procesamiento de parametros de entrada*/
   int processing = process_params(argc, argv, &input_file, &output_file);
   if (processing != SUCCESS){
-    if (processing == BAD_ARGUMENTS){
-      printf("%s!\n", ARGUMENTS_ERROR_MESSAGE);
-      return BAD_ARGUMENTS;
-    } return SUCCESS;
+    if (processing == BAD_ARGUMENTS) return BAD_ARGUMENTS;
+    else return SUCCESS;
   }
   //Apertura de archivos
+  //Entrada
   FILE* input_fp = open_input(input_file);
+  if (!input_fp) return BAD_INPUT_PATH;
+  //Salida
   FILE* output_fp = open_output(output_file);
+  if (!output_fp){
+    fclose(input_fp);
+    return BAD_OUTPUT_PATH;
+  }
   //Lectura del archivo
   char* input_string = read_input(input_fp, INIT_SIZE);
   if (!input_string){
@@ -179,28 +186,26 @@ int write_result(FILE* fp, char* result){
 
 FILE* open_input(char* path){
   //Se intenta abrir el archivo
-  FILE* input_fp = fopen(path, "r");
-  //En caso de error, se notifica y se define stdin como input_fp
-  if (!input_fp){
-    if (path){
-      printf("%s%s\n", INPUT_OPEN_ERROR, strerror(errno));
-      printf("%s\n\n", DEFAULT_INPUT_MESSAGE);
-    }
-    input_fp = DEFAULT_INPUT;
+  FILE* input_fp;
+  //path == NUll significa stdin
+  if (!path) input_fp = DEFAULT_INPUT;
+  else {
+    input_fp = fopen(path, "r");
+    //Notificacion de error
+    if (!input_fp) printf("%s%s\n", INPUT_OPEN_ERROR, strerror(errno));
   }
   return input_fp;
 }
 
 FILE* open_output(char* path){
   //Se intenta abrir el archivo
-  FILE* output_fp = fopen(path, "w");
-  //En caso de error, se notifica y se define stdout como output_fp
-  if (!output_fp){
-    if (path){
-      printf("%s%s\n", OUTPUT_OPEN_ERROR, strerror(errno));
-      printf("%s\n\n", DEFAULT_OUTPUT_MESSAGE);
-    }
-    output_fp = DEFAULT_OUTPUT;
+  FILE* output_fp;
+  //path == NULL signifca stdout
+  if (!path) output_fp = DEFAULT_OUTPUT;
+  else{
+    output_fp = fopen(path, "w");
+    //Notificacion de error
+    if (!output_fp) printf("%s%s\n", OUTPUT_OPEN_ERROR, strerror(errno));
   }
   return output_fp;
 }
@@ -386,7 +391,11 @@ int process_params(int argc, char** argv, char** input_file, char** output_file)
         case 'o':
           *output_file = optarg;
           break;
+        case ':':
+          return BAD_ARGUMENTS;
+          break;
         case '?':
+          return BAD_ARGUMENTS;
           break;
         default:
           return BAD_ARGUMENTS;
