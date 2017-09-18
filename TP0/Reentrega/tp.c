@@ -228,7 +228,7 @@ char* strrev(char *str){
 }
 
 char* get_palindromes(char* string){
-  int len = strlen(string);
+  int len = strlen(string) + 1;
   if (len < 1) return "\n";
   int init = 0;
   int cant = 0;
@@ -304,7 +304,7 @@ char* get_palindromes(char* string){
 
 bool is_palindrome(char* string){
   /* Si tiene un solo caracter entonces es palindromo */
-  int len = strlen(string);
+  int len = strlen(string) + 1;
   if (len < 1) return false;
   else if (len == 1) return true;
   /*Analizamos la palabra*/
