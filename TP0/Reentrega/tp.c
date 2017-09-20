@@ -28,12 +28,12 @@
 
 #define END_PROGRAM 8 //Parametros de entrada
 
-#define READING_ERROR 1
 #define WRITING_ERROR 2
 #define PALINDROME_ERROR 3
 #define BAD_ARGUMENTS 4
 #define BAD_INPUT_PATH 5
 #define BAD_OUTPUT_PATH 6
+#define READING_ERROR 7
 
 #define FAIL 1
 #define SUCCESS 0
