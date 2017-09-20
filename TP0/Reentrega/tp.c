@@ -20,11 +20,8 @@
 #define REALLOC_ERROR "An error ocurred while reallocating memory! Error: "
 #define INPUT_OPEN_ERROR "An error ocurred while opening input file! Error: "
 #define OUTPUT_OPEN_ERROR "An error ocurred while opening output file! Error: "
-#define DEFAULT_INPUT_MESSAGE "Input file is now stdin."
-#define DEFAULT_OUTPUT_MESSAGE "Output file is now stdout."
 #define RESULT_WRITING_ERROR "An error ocurred while writing the result! Error: "
 #define PALINDROME_ERROR_MESSAGE "An error ocurred while checking for palindromes!"
-#define ARGUMENTS_ERROR_MESSAGE "An error ocurred while processing the arguments!"
 
 #define END_PROGRAM 8 //Parametros de entrada
 
