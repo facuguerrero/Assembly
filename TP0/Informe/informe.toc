@@ -4,10 +4,13 @@
 \contentsline {subsection}{\numberline {1.2}Entorno}{1}
 \contentsline {subsection}{\numberline {1.3}Complicaciones}{1}
 \contentsline {subsection}{\numberline {1.4}Desarrollo}{1}
-\contentsline {section}{\numberline {2}Ejecuci\IeC {\'o}n}{1}
-\contentsline {subsection}{\numberline {2.1}Instrucciones para la compilaci\IeC {\'o}n}{1}
-\contentsline {subsection}{\numberline {2.2}Instrucciones para la ejecuci\IeC {\'o}n}{1}
-\contentsline {subsection}{\numberline {2.3}Pruebas}{2}
-\contentsline {subsubsection}{\numberline {2.3.1}Primer prueba}{2}
-\contentsline {subsubsection}{\numberline {2.3.2}Segunda prueba}{2}
-\contentsline {subsubsection}{\numberline {2.3.3}Tercera prueba}{2}
+\contentsline {subsection}{\numberline {1.5}Manejo de errores}{1}
+\contentsline {subsubsection}{\numberline {1.5.1}Valores devueltos por la funci\IeC {\'o}n \texttt {main}}{2}
+\contentsline {subsection}{\numberline {1.6}Documentaci\IeC {\'o}n}{2}
+\contentsline {section}{\numberline {2}Ejecuci\IeC {\'o}n}{4}
+\contentsline {subsection}{\numberline {2.1}Instrucciones para la compilaci\IeC {\'o}n}{4}
+\contentsline {subsection}{\numberline {2.2}Instrucciones para la ejecuci\IeC {\'o}n}{4}
+\contentsline {subsection}{\numberline {2.3}Pruebas}{4}
+\contentsline {subsubsection}{\numberline {2.3.1}Primer prueba}{5}
+\contentsline {subsubsection}{\numberline {2.3.2}Segunda prueba}{5}
+\contentsline {subsubsection}{\numberline {2.3.3}Tercera prueba}{5}
