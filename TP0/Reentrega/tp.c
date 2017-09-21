@@ -302,7 +302,7 @@ char* get_palindromes(char* string){
 bool is_palindrome(char* string){
   /* Si tiene un solo caracter entonces es palindromo */
   int len = strlen(string) + 1;
-  if (len < 1) return false;
+  if (len < 1|| !strcmp(string,"")) return false;
   else if (len == 1) return true;
   /*Analizamos la palabra*/
   bool result = false;
