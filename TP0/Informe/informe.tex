@@ -57,7 +57,7 @@
 			\end{itemize}
 			\tab Cualquier otro caracter \emph{ASCII} es considerado un \emph{espacio}. Es decir,
 			indica el fin de una \emph{palabra} y el comienzo de otra. Cabe destacar que una cadena
-			con un sólo caracter no es considerada \emph{palabra}.
+			con un sólo caracter es considerada \emph{palabra}.
 		\subsection{Entorno}
 			El trabajo se realizó en una máquina virtual \emph{NetBSD} (que simula tener un procesador
 			\emph{MIPS}) montada por el emulador \emph{GXemul} en \emph{Ubuntu 17.04}.
@@ -65,9 +65,6 @@
 			La principal complicación que surgió en el desarrollo del trabajo fue el hecho de que algunas
 			librerías que existen en \emph{Ubuntu} no existen en \emph{NetBSD} (particularmente \emph{argp}),
 			por lo que hubo que adaptarse a esta limitación y utilizar librerías que funcionaran en ambos. \\
-			\tab Por otro lado, cierta secuencia de lineas de código funcionaban en un sistema operativo pero
-			no el otro. Esta fue la mayor dificultad que se debió afrontar, pues si bien inicialmente el programa
-			funcionaba, al probar en el otro sistema operativo se descubría que no era así. \\
 			\tab Por último, un problema a resolver fue el de tener que enviar por \code{scp} todos los archivos
 			que fueran modificados en \emph{Ubuntu} hacia \emph{NetBSD}. De todos modos este problema fue
 			resuelto utilizando \code{sshfs} que permite utilizar la interfaz gráfica de \emph{Ubuntu} para
@@ -478,4 +475,15 @@
         \tab\tab\code{neUqUeN}\\
         \tab\tab\code{NarNran}\\
 
+	\section{Conclusiones}
+		La principal conclusión que obtuvimos a partir del desarrollo de este trabajo práctico es que, al trabajar en \emph{NetBSD}
+		se debe ser más cuidadoso al programar que en el caso de, por ejemplo, \emph{Ubuntu}. Con esto nos referimos a ciertas
+		situaciones particulares en las que \emph{Ubuntu} resuelve ciertos problemas de la programación que \emph{NetBSD} no resuelve
+		y resulta en un error. \\
+		\tab Por ejemplo, en la línea 291 de \code{tp.c} se agrega un fin de linea que no es necesario en \emph{Ubuntu}, pues lo
+		'resuelve solo', pero sí lo es en \emph{NetBSD} pues en este último, el programa no encuentra en fin de linea e imprime
+		caracteres de más. \\
+		\tab Por esta misma razón, notamos que es recomendable trabajar constantemente utilizando la carpeta virtual de \code{sshfs}
+		para poder compilar y ejecutar el programa en \emph{NetBSD} en lugar de hacerlo en \emph{Ubuntu}. De todas maneras, al tener
+		que desarrollar en \emph{Assembler}, no queda otra opción que hacer esto recién mencionado.
 \end{document}
