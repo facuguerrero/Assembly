@@ -33,6 +33,7 @@ mystrlen_loop:
   j	mystrlen_loop
 
 lowering:
+	la t6, string_space
   add t5, zero, v0 #largo del loop
   lw a0, ARG0_POS($fp)
 
@@ -58,13 +59,15 @@ lower:
   addu t0, t0, t4 #se pasa a minuscula
 
 add_char:
+	sb t0, 0(t6)
   addiu a0, a0, 1
-  sll v0, v0, 8
-  add v0, v0, t0
+  addiu t6, 1
 
   j loop
 
 return:
+	sb zero, 0(t6) #terminar string '\0'
+	la v0, string_space #cargar en return direccion del string
   move	sp, $fp
   lw	ra, 44(sp)
   lw	$fp, 40(sp)
@@ -72,3 +75,6 @@ return:
   j	ra
 
 	.end to_lower
+
+	.data
+string_space: .space 128

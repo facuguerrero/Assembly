@@ -6,7 +6,7 @@ extern char* to_lower(char* a);
 int main(int argc, char** argv){
   char* res = to_lower(argv[1]);
 
-  printf("%p\n", res);
+  printf("%s\n", res);
 
   return 0;
 }
