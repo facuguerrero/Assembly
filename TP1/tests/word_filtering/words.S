@@ -1,7 +1,7 @@
 #include <mips/regdef.h>
 #include <sys/syscall.h>
 
-#define ARG0_POS 32
+#define ARG0_POS 48
 
     .text
     .align  2
@@ -91,25 +91,25 @@ space:
   addi t0, zero, 0 #fin de string
   sb t0, 0(t6) #agregar '\0'
   addiu a0, a0, 1 #avanzar en palabra original
-  la t6, string_space #en el proximo ciclo, se empieza a escribir de cero el arreglo
   beqz t7, check_end #si es una palabra vacia, sigue procesando
-  add s0, a0, zero #almacenar puntero
-  #salto a palindrome
+  #guardo a0 y t5
+  sw a0, 52($fp)
+  sw t5, 56($fp)
   la a0, string_space #parametro de palindrome
+  #salto a palindrome
   la t9, palindrome #para jump and link
   jal ra, t9 #salto a la funcion
-  #recuperamos a0
-  add a0, zero, s0
   #vuelta de palindrome
+  lw a0, 52($fp) #recuperamos la posicion del string actual
+  lw t5, 56($fp) #recuperamos la longitud total
+  la t6, string_space #en el proximo ciclo, se empieza a escribir de cero el arreglo
   add t7, zero, zero
   bnez v0, sumar_palindromo #si volvio 0 de palindromo, sumamos 1 a la cantidad
-  beqz t5, return
   #continuacion lectura
   j loop #leemos la proxima palabra
 
 sumar_palindromo:
   addi t8, t8, 1
-  beqz t5, return
   j loop
 
 check_end:
@@ -118,12 +118,12 @@ check_end:
   j loop
 
 return:
-  add v0, zero, t8
+  add v0, zero, t8 #se guarda la cantidad de palindromos
   move  sp, $fp
   lw    ra, 44(sp)
   lw    $fp, 40(sp)
   addu  sp, sp, 48
-  j ra
+  jr ra
 
   .end verificar_char
   .data

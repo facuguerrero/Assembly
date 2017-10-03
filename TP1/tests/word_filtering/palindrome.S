@@ -112,7 +112,7 @@ return:
     lw  ra, 44(sp)
     lw  $fp, 40(sp)
     addu    sp, sp, 48
-    j   ra
+    jr   ra
 
   .end palindrome
   .data
