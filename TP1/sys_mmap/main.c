@@ -23,7 +23,7 @@ main(int argc, char * const argv[])
 
 		printf(" Freeing memory ...");
 		fflush(stdout);
-		myfree(p);
+		free(p);
 		printf(" Ok.\n");
 		fflush(stdout);
 	}

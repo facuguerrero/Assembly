@@ -50,7 +50,7 @@ correspondientes en los parametros de la funcion.
  * @return: SUCCESS | BAD_ARGUMENTS.*/
 int process_params(int argc, char** argv, char** input_file, char** output_file);
 
-extern size_t read_write(int ifd, int ofd);
+extern char* read_write(int ifd, size_t size);
 
 int main(int argc, char** argv){
   char* output_file = NULL;
@@ -74,10 +74,10 @@ int main(int argc, char** argv){
 
   /*Programa assembler que imprime en output todo lo que lee de input*/
   int ifd = fileno(input_fp);
-  int ofd = fileno(output_fp);
-	int ret = read_write(ifd, ofd);
+  //int ofd = fileno(output_fp);
+	char* ret = read_write(ifd, 10);
   /*Vuelve a C*/
-  if (ret) printf("ERROR\n");
+  printf("%s\n", ret);
 
   close_files(output_fp, input_fp);
 

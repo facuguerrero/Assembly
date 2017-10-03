@@ -1,8 +1,9 @@
 #include <mips/regdef.h>
 #include <sys/syscall.h>
 
-#define ARG0_POS 32
-#define ARG1_POS 36
+#define ARG0_POS 48
+#define ARG1_POS 52
+#define BUFFER_POS 56
 
 	.text
 	.align	2
@@ -24,16 +25,20 @@ read_write:
 
 	# Guardo los argumentos
 	sw	a0, ARG0_POS($fp)	# Guardo en $fp + ARG0_POS a0, que es el file descriptor del stream
-	sw	a1, ARG1_POS($fp)	# Guardo en $fp + ARG1_POS a1, que es el string a flushear
+	sw	a1, ARG1_POS($fp)	# Guardo en $fp + ARG1_POS a1, que es el tamaño del buffer
 
+	lw a0, ARG1_POS($fp) #tam del buffer como size
+	lw t9, mymalloc
+	jal ra, t9 #salto a malloc
+	sw v0, BUFFER_POS($fp) #guardamos buffer de malloc en t0
 while:
 	# Intentamos leer un byte de informaci�n de stdin, usando
 	# el stack del proceso como lugar de almacenamiento.
 	#
-	li	v0, SYS_read 			# ver dentro de <sys/syscall.h>.
-	lw	a0, ARG0_POS($fp) # a0: file descriptor number.
-	la	a1, 28(sp)   			# a1: data pointer.
-	li	a2, 1       			# a2: available space.
+	li	v0, SYS_read 			  # ver dentro de <sys/syscall.h>.
+	lw	a0, ARG0_POS($fp)   # a0: file descriptor number.
+	lw	a1, BUFFER_POS($fp)	# a1: data pointer.
+	lw	a2, ARG1_POS($fp)	  # a2: available space.
 	syscall
 
 	# Verificamos el retorno de la llamada a SYS_read: si termin�
@@ -53,33 +58,9 @@ while:
 	# otros valores, los tratamos como error.
 	#
 	beq	v0, zero, eof
-	li	t0, 1
-	bne	v0, t0, read_error
 
-	# S�lo podemos llegar aqu� en el caso de leerr exactamente un
-	# caracter de informaci�n, as� que intentamos enviarlo por la
-	# salida est�ndar, detectando errores. Ver m�s abajo.
-	#
-	li	v0, SYS_write 		# ver dentro de <sys/syscall.h>.
-	lw	a0, ARG1_POS($fp) # a0: file descriptor number.
-	la	a1, 28(sp)    		# a1: output data pointer.
-	li	a2, 1					 		# a2: output byte size.
-	syscall
+	b while
 
-	# Revisamos el retorno de SYS_write: si $a3 es no-nulo, quiere
-	# decir que ha ocurrido un error. En caso contrario, imitamos
-	# lo hecho en SYS_read, revisando el valor de la cantidad de
-	# informaci�n que ha sido enviada.
-	#
-	bne	a3, zero, write_error
-	li	t0, 1
-	bne	v0, t0, write_error
-
-	# Volvemos a iterar, intentando leer otro caracter de entrada.
-	#
-	b	while
-
-write_error:
 read_error:
 	li	v0, SYS_exit
 	li	a0, 1
@@ -92,7 +73,7 @@ eof:
 	# Primero, restauramos los valores de los registros relevantes,
 	# y luego destru�mos nuestro stack frame.
 	#
-	move	v0, zero
+	lw	v0, BUFFER_POS($fp)
 	move	sp, $fp
 	lw	ra, 44(sp)
 	lw	$fp, 40(sp)
