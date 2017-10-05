@@ -73,7 +73,7 @@ eof:
 	# Primero, restauramos los valores de los registros relevantes,
 	# y luego destru�mos nuestro stack frame.
 	#
-	lw	v0, BUFFER_POS($fp)
+	la	v0, BUFFER_POS($fp)
 	move	sp, $fp
 	lw	ra, 44(sp)
 	lw	$fp, 40(sp)
