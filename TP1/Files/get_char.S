@@ -29,7 +29,7 @@ get_char:
 	move $fp, sp
 
   sw a0, FD_POS($fp)    #Se almacena el file descriptor de entrada
-  sw a1, BUF_POS($fp)  #Se almacena la direccion al buffer de entrada
+  sw a1, BUF_POS($fp)   #Se almacena la direccion al buffer de entrada
 	#Cargamos la posicion del buffer en la que estamos escribiendo
   la t0, ibuf_pos #Variable global (pos actual)
   lw s0, 0(t0) 		#Se la almacena en un saved register
@@ -37,7 +37,7 @@ get_char:
   la t1, ibuf_size #Variable global (size actual)
   lw s1, 0(t1)		 #Se la almacena en otro saved register
 	#Si el tamaño es mayor a la posicion actual, entonces podemos leer del buffer
-  bgtu s1, s0, load_char
+  bltu s0, s1, load_char
 	#Si termino la lectura (se encontro EOF), se termina
 	la t0, file_end 			#Flag global
 	lw t1, 0(t0)					#se carga el valor
@@ -65,21 +65,21 @@ fill_buffer:
 	li v0, SYS_read
 	syscall
 	#control de errores
-	bnez a3, read_error
+	bne a3, zero, read_error
 	#fin de archivo
-	beqz v0, end_reading
+	beq v0, zero, end_reading
 
 reading_check:
 	addu s1, s1, v0 	#Se actualiza la cantidad de bytes leidos
 	la t0, ibuf_size	#global buffer size
 	lw t1, 0(t0)			#cargamos el tamaño del buffer
 	#verificacion de lectura
-	bgt t1, s1, fill_buffer #Si no se completo el buffer en la lectura previa, se lee otra vez
+	blt s1, t1, fill_buffer #Si no se completo el buffer en la lectura previa, se lee otra vez
 	#En caso contrario, se carga el primer caracter del buffer y se termina la funcion
 load_char:
   lw a1, BUF_POS($fp)	#Cargamos el buffer
-  addu t0, s0, a1			#Avanzamos hasta la posicion a leer
-  lbu v0, 0(t0)				#Guardamos en v0 el caracter leido (retorno)
+  addu t2, s0, a1			#Avanzamos hasta la posicion a leer
+  lbu v0, 0(t2)				#Guardamos en v0 el caracter leido (retorno)
 
   addiu s0, s0, 1			#Avanzamos en la posicion a leer
   la t0, ibuf_pos			#Modificamos la variable global que lleva la posicion actual del buffer
@@ -107,7 +107,7 @@ end_reading:
 set_end_flag:
 	#se setea el flag global de fin de archivo para finalizar la ejecucion
 	la t0, write_file_end #var global
-	addi t1, zero, 1			#se setea el 1 a poner en el flag
+	li t1, 1							#se setea el 1 a poner en el flag
 	sw t1, 0(t0)					#se define el 1 como el valor del flag
 	move v0, zero					#valor de retorno sin error
 	b return
@@ -128,9 +128,9 @@ return:
 	.size get_char,.-get_char
 
 	.data
-	.globl write_file_end #flag global que indica si termino la entrada
 	.globl ibuf_pos #posicion del buffer de salida
 	.globl file_end #EOF notif
+	.globl write_file_end #flag global que indica si termino la entrada
 
 ibuf_pos:         .word -1 #debe ser <0 para que en la primer leida se llene el buffer
 file_end:         .word 0

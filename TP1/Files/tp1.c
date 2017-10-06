@@ -10,8 +10,8 @@
 
 #define DEFAULT_INPUT stdin
 #define DEFAULT_OUTPUT stdout
-#define DEFAULT_OBYTES 128
-#define DEFAULT_IBYTES 128
+#define DEFAULT_OBYTES 1
+#define DEFAULT_IBYTES 1
 #define IBYTES 0
 #define OBYTES 1
 
@@ -54,7 +54,8 @@ correspondientes en los parametros de la funcion.
  * @param output_file: Puntero al string donde se guarda el path de output.
  * @return: SUCCESS | BAD_ARGUMENTS.*/
 int process_params(int argc, char** argv, char** input_file, char** output_file, char** ibytes, char** obytes);
-extern char* palindrome(int ifd, size_t ibytes, int ofd, size_t obytes);
+//extern char* palindrome(int ifd, size_t ibytes, int ofd, size_t obytes);
+extern int palindrome(int ifd, size_t ibytes, int ofd, size_t obytes);
 
 int main(int argc, char** argv){
   char* output_file = NULL;
@@ -88,10 +89,11 @@ int main(int argc, char** argv){
   int ifd = fileno(input_fp);
   int ofd = fileno(output_fp);
   /*Programa assembler que imprime en output todo los palindromos que lee de input*/
-  char* ret_val = palindrome(ifd, ib, ofd, ob);
+  //char* ret_val = palindrome(ifd, ib, ofd, ob);
+  int ret_val = palindrome(ifd, ib, ofd, ob);
   /*Vuelve a C*/
   //if (ret_val > 0) fprintf(stderr, "%s\n", PALINDROME_ERROR);
-  printf("%s\n", ret_val);
+  printf("%c\n", ret_val);
   return 0;
 }
 

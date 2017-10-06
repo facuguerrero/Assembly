@@ -1,6 +1,6 @@
 #include <mips/regdef.h>
 
-#define WORD_POS 16
+#define WORD_POS 60
 #define BUF_POS 56
 #define SIZE_POS 52
 #define FD_POS 48
@@ -39,7 +39,7 @@ alloc_word:
   beqz v0, malloc_error
 
   sw v0, WORD_POS($fp) #se alamacena el retorno
-  addu s0, zero, zero  #registro donde se almacena el largo de la palabra
+  move s0, zero  			 #registro donde se almacena el largo de la palabra
 
 reading:
   #Se piden caracteres progresivamente (del file o del buffer, no importa en este nivel)
@@ -48,8 +48,9 @@ reading:
   #llamado a get_char
   la t9, get_char
   jal ra, t9
+	b return
   #control de error
-  blez v0, read_error
+  beq v0, -1, read_error
 
 check_char:
   #se verifica si un caracter es un espacio o no
