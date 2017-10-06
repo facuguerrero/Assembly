@@ -39,15 +39,15 @@ is_palindrome:
 check_palindrome:
 	#recorreremos la palabra de der a izq y de izq a der al mismo tiempo, comparando
 	#asi la palabra consigo misma, pero invertida (der-izq = D, izq-der = I)
-	move s0, v0 				 #pos init der-izq = 0
-	add s1, a1, 1				 #pos init izq-der = len-1
+	move s0, zero				 #pos init der-izq = 0
+	addiu s1, a1, 1			 #pos init izq-der = len-1
 	#ciclo principal
 checking:
 	#pasamos a minuscula el caracter actual de D
 	lw t0, WORD_POS($fp) #Puntero a la palabra
-	add t0, t0, s0			 #Avanzamos hasta D[i] (pos actual)
+	addu t0, t0, s0			 #Avanzamos hasta D[i] (pos actual)
 	#caracter a minuscula
-	lb a0, 0(t0)				#tomamos el caracter D[i]
+	lbu a0, 0(t0)				#tomamos el caracter D[i]
 	#vemos si es una letra mayuscula, si no es, pasamos al segundo char
 	blt a0, 65, second_char #lim inferior mayus
 	bgt a0, 90, second_char	#lim superior mayus
@@ -59,7 +59,7 @@ second_char:
 	lw t1, WORD_POS($fp) #Puntero a la palabra
 	add t1, t1, s1			 #Avanzamos hasta I[j] (pos actual)
 	#carcater a minuscula
-	lb a1, 0(t1)				 #tomamos el caracter I[j]
+	lbu a1, 0(t1)				 #tomamos el caracter I[j]
 	#vemos si es una letra mayuscula, sino, saltamos a comparar
 	blt a1, 65, equals	#lim inferior mayus
 	bgt a1, 90, equals	#lim superior mayus

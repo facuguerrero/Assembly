@@ -54,8 +54,7 @@ correspondientes en los parametros de la funcion.
  * @param output_file: Puntero al string donde se guarda el path de output.
  * @return: SUCCESS | BAD_ARGUMENTS.*/
 int process_params(int argc, char** argv, char** input_file, char** output_file, char** ibytes, char** obytes);
-
-extern char* palindrome (int ifd, size_t ibytes, int ofd, size_t obytes);
+extern char* palindrome(int ifd, size_t ibytes, int ofd, size_t obytes);
 
 int main(int argc, char** argv){
   char* output_file = NULL;

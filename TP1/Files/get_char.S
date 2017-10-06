@@ -44,34 +44,33 @@ get_char:
 	bnez t1, set_end_flag #Se setea el flag de fin y se retorna
 	#En caso contrario, necesitamos llenar el buffer desde el archivo
 
-fill_buffer:
-	#Se llena el buffer leyendo desde el archivo
-
 	#Dado que podemos necesitar multiples syscalls, definimos una variable
 	#que cuente cuantos bytes se leyeron (s1)
 	move s1, zero
+	#reiniciamos la posicion actual
+	move s0, zero
+fill_buffer:
+	#Se llena el buffer leyendo desde el archivo
 	#parametros de SYS_write
 	#file
 	lw a0, FD_POS($fp)	#cargamos el file descriptor de entrada
 	#data pointer
 	lw a1, BUF_POS($fp)	#cargamos la direccion del buffer
-	add a1, a1, s1 			#Avanzamos en cant_bytes posiciones
+	addu a1, a1, s1 			#Avanzamos en cant_bytes posiciones
 	#size
 	la t0, ibuf_size		#variable global que contiene el tamaño del buffer
 	lw a2, 0(t0)				#como parametro de tam del syscall
-	sub a2, a2, s1			#le restamos la cantidad de bytes ya leidos
+	subu a2, a2, s1			#le restamos la cantidad de bytes ya leidos
 	#llamado a SYS_read
 	li v0, SYS_read
 	syscall
 	#control de errores
 	bnez a3, read_error
-	#reiniciamos la posicion actual
-	move s0, zero
 	#fin de archivo
 	beqz v0, end_reading
 
 reading_check:
-	add s1, s1, v0 		#Se actualiza la cantidad de bytes leidos
+	addu s1, s1, v0 	#Se actualiza la cantidad de bytes leidos
 	la t0, ibuf_size	#global buffer size
 	lw t1, 0(t0)			#cargamos el tamaño del buffer
 	#verificacion de lectura
@@ -80,7 +79,7 @@ reading_check:
 load_char:
   lw a1, BUF_POS($fp)	#Cargamos el buffer
   addu t0, s0, a1			#Avanzamos hasta la posicion a leer
-  lb v0, 0(t0)				#Guardamos en v0 el caracter leido (retorno)
+  lbu v0, 0(t0)				#Guardamos en v0 el caracter leido (retorno)
 
   addiu s0, s0, 1			#Avanzamos en la posicion a leer
   la t0, ibuf_pos			#Modificamos la variable global que lleva la posicion actual del buffer
@@ -97,12 +96,12 @@ end_reading:
 	sw s1, 0(t0)			#la actualizamos con cant bytes read
 	#Seteamos el flag de fin de archivo global
 	la t0, file_end		#cargamos la var global
-	addi t1, zero, 1	#seteamos 'true'
+	li t1, 1					#seteamos 'true'
 	sw t1, 0(t0)			#lo guardamos en la var global
 	#En caso de que no se hubiera leido nada mas ademas del EOF, entonces se termino
 	#el programa (buffer vacio y archivo al final)
 	beqz s1, set_end_flag
-	#En caso contrario, devolvemo el primer byte del buffer
+	#En caso contrario, devolvemos el primer byte del buffer
 	b load_char
 
 set_end_flag:
@@ -114,7 +113,7 @@ set_end_flag:
 	b return
 
 read_error:
-	addi v0, zero, READ_ERROR #READ_ERROR como retorno de error
+	li v0, READ_ERROR 		#READ_ERROR como retorno de error
 
 return:
 	lw s0, 16($fp)

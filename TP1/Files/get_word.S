@@ -1,6 +1,6 @@
 #include <mips/regdef.h>
 
-#define WORD_POS 60
+#define WORD_POS 16
 #define BUF_POS 56
 #define SIZE_POS 52
 #define FD_POS 48
@@ -76,7 +76,7 @@ space:
   addu t0, a0, s0       #Avanzamos hasta el fin de la palabra para agregar un '\n'
   addiu t1, zero, 10    #Cargamos el '\n'
   sb t1, 0(t0)          #Escribimos el '\n'
-  #Guardado de largo en el puntero global
+  #Guardado de largo en el puntero del largo
   lw a1, SIZE_POS($fp)  #puntero al largo
   sw s0, 0(a1)          #se almacena el largo
   #devolucion de lectura

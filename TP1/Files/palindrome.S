@@ -79,7 +79,6 @@ reading:
   la t9, get_word
   jal ra, t9
 	b return
-
 	beqz v0, read_error 		 #En caso de error en la lectura, se termina
   sw v0, WORD_POS($fp)     #Retorno de get_word [palabra para ver si es palidromo]
 
