@@ -1,15 +1,15 @@
 #include <stdio.h>
 #include <sys/types.h>
-#include <mymalloc.h>
 
-int
-main(int argc, char * const argv[])
-{
+extern void *mymalloc(size_t);
+extern void myfree(void *);
+
+int main(int argc, char * const argv[]){
 	size_t i;
 	size_t j;
 	char *p;
 
-	for (i = 1; i; ++i) {
+	for (i = 1; i < 10; ++i) {
 		fprintf(stdout, "malloc(%ld) ...", (long) i);
 		fflush(stdout);
 		p = (char *) mymalloc(i);
@@ -23,7 +23,7 @@ main(int argc, char * const argv[])
 
 		printf(" Freeing memory ...");
 		fflush(stdout);
-		free(p);
+		myfree(p);
 		printf(" Ok.\n");
 		fflush(stdout);
 	}

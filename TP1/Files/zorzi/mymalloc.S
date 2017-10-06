@@ -24,13 +24,6 @@
 	.globl	mymalloc
 	.ent	mymalloc
 mymalloc:
-
-	.frame $fp, 56, ra
-	.set	noreorder
-	.cpload	t9
-	.set	reorder
-	.cprestore 32
-	sw	gp, 40(sp)
 	subu	sp, sp, 56
 	sw	ra, 48(sp)
 	sw	$fp, 44(sp)
@@ -57,7 +50,7 @@ mymalloc:
 	and	t0, t0, 0xfffffffc
 	sw	t0, 40(sp)
 
-	# Increment the allocation size by 12 units, in order to
+	# Increment the allocation size by 12 units, in order to 
 	# make room for the allocation signature, block size and
 	# trailer information.
 	#
@@ -73,7 +66,7 @@ mymalloc:
 	li	a2, PROT_READ|PROT_WRITE
 	li	a3, MAP_PRIVATE|MAP_ANON
 
-	# According to mmap(2), the file descriptor
+	# According to mmap(2), the file descriptor 
 	# must be specified as -1 when using MAP_ANON.
 	#
 	li	t0, -1
@@ -199,5 +192,5 @@ myfree_return:
 	lw	$fp, 28(sp)
 	addu	sp, sp, 40
 
-	jr	ra
+	j	ra
 	.end	myfree

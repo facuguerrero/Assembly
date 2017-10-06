@@ -1,9 +1,9 @@
 #include <mips/regdef.h>
 #include <sys/syscall.h>
 
-#define ARG0_POS 48
-#define ARG1_POS 52
-#define BUFFER_POS 56
+#define ARG0_POS 28
+#define ARG1_POS 32
+#define BUFFER_POS 36
 
 	.text
 	.align	2
@@ -11,34 +11,28 @@
 	.globl	read_write
 	.ent	read_write
 read_write:
-	.frame $fp, 48, ra
+	.frame $fp, 28, ra
 	.set	noreorder
 	.cpload	t9
 	.set	reorder
-	subu	sp, sp, 48
+	subu	sp, sp, 28
 
-	.cprestore 32
-	sw	ra, 44(sp)
-	sw	$fp, 40(sp)
-	sw	gp, 36(sp)
+	.cprestore 12
+	sw	ra, 24(sp)
+	sw	$fp, 20(sp)
+	sw	gp, 16(sp)
 	move	$fp, sp
 
 	# Guardo los argumentos
-	sw	a0, ARG0_POS($fp)	# Guardo en $fp + ARG0_POS a0, que es el file descriptor del stream
-	sw	a1, ARG1_POS($fp)	# Guardo en $fp + ARG1_POS a1, que es el tamaño del buffer
+	sw	a0, ARG0_POS($fp)	# File descriptor de entrada
+	sw  a1, ARG1_POS($fp) # File descriptor de salida
 
-	lw a0, ARG1_POS($fp) #tam del buffer como size
-	lw t9, mymalloc
-	jal ra, t9 #salto a malloc
-	sw v0, BUFFER_POS($fp) #guardamos buffer de malloc en t0
 while:
-	# Intentamos leer un byte de informaci�n de stdin, usando
-	# el stack del proceso como lugar de almacenamiento.
-	#
-	li	v0, SYS_read 			  # ver dentro de <sys/syscall.h>.
+	#leer del fd
+	li	v0, SYS_read 			  # write
 	lw	a0, ARG0_POS($fp)   # a0: file descriptor number.
-	lw	a1, BUFFER_POS($fp)	# a1: data pointer.
-	lw	a2, ARG1_POS($fp)	  # a2: available space.
+	la	a1, buffer					# a1: data pointer.
+	li	a2, 128	  					# a2: available space.
 	syscall
 
 	# Verificamos el retorno de la llamada a SYS_read: si termin�
@@ -59,8 +53,27 @@ while:
 	#
 	beq	v0, zero, eof
 
+	# Vemos si lo que tenemos en buffer es palindromo o no
+	
+
+write:
+	# escribimos en ofd
+	li	v0, SYS_write 		# ver dentro de <sys/syscall.h>.
+	lw	a0, ARG1_POS($fp) # a0: file descriptor number.
+	la	a1, buffer   		# a1: output data pointer.
+	li	a2, 128					 		# a2: output byte size.
+	syscall
+
+	# Revisamos el retorno de SYS_write: si $a3 es no-nulo, quiere
+	# decir que ha ocurrido un error. En caso contrario, imitamos
+	# lo hecho en SYS_read, revisando el valor de la cantidad de
+	# informaci�n que ha sido enviada.
+	#
+	bne	a3, zero, write_error
+
 	b while
 
+write_error:
 read_error:
 	li	v0, SYS_exit
 	li	a0, 1
@@ -73,10 +86,11 @@ eof:
 	# Primero, restauramos los valores de los registros relevantes,
 	# y luego destru�mos nuestro stack frame.
 	#
-	la	v0, BUFFER_POS($fp)
 	move	sp, $fp
-	lw	ra, 44(sp)
-	lw	$fp, 40(sp)
-	addu	sp, sp, 48
+	lw	ra, 24(sp)
+	lw	$fp, 20(sp)
+	addu	sp, sp, 28
 	j	ra
 	.end	read_write
+	.data
+buffer: .space 128

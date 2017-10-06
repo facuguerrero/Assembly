@@ -10,17 +10,17 @@
     .ent    verificar_char
 
 verificar_char:
-    .frame $fp, 48, ra
-    .set    noreorder
-    .cpload t9
-    .set    reorder
-    subu    sp, sp, 48
+  .frame $fp, 48, ra
+  .set    noreorder
+  .cpload t9
+  .set    reorder
+  subu    sp, sp, 48
 
-    .cprestore 32
-    sw  ra, 44(sp)
-    sw  $fp, 40(sp)
-    sw  gp, 36(sp)
-    move    $fp, sp
+  .cprestore 32
+  sw  ra, 44(sp)
+  sw  $fp, 40(sp)
+  sw  gp, 36(sp)
+  move    $fp, sp
 
   # Guardo el argumento
   sw  a0, ARG0_POS($fp)   # Puntero al string
