@@ -79,8 +79,8 @@ int main(int argc, char** argv){
     return BAD_OUTPUT_PATH;
   }
   //Definicion de bytes de los buffers
-  size_t ib = 0;
-  size_t ob = 0;
+  int ib = 0;
+  int ob = 0;
   if (ibytes) ib = atoi(ibytes);
   if (obytes) ob = atoi(obytes);
   if (ib < 1) ib = DEFAULT_IBYTES;
@@ -92,8 +92,7 @@ int main(int argc, char** argv){
   //char* ret_val = palindrome(ifd, ib, ofd, ob);
   int ret_val = palindrome(ifd, ib, ofd, ob);
   /*Vuelve a C*/
-  //if (ret_val > 0) fprintf(stderr, "%s\n", PALINDROME_ERROR);
-  printf("%d\n", ret_val);
+  if (ret_val > 0) fprintf(stderr, "%s\n", PALINDROME_ERROR);
   return 0;
 }
 
