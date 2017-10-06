@@ -93,7 +93,7 @@ int main(int argc, char** argv){
   int ret_val = palindrome(ifd, ib, ofd, ob);
   /*Vuelve a C*/
   //if (ret_val > 0) fprintf(stderr, "%s\n", PALINDROME_ERROR);
-  printf("%c\n", ret_val);
+  printf("%d\n", ret_val);
   return 0;
 }
 

@@ -40,7 +40,7 @@ check_palindrome:
 	#recorreremos la palabra de der a izq y de izq a der al mismo tiempo, comparando
 	#asi la palabra consigo misma, pero invertida (der-izq = D, izq-der = I)
 	move s0, zero				 #pos init der-izq = 0
-	addiu s1, a1, 1			 #pos init izq-der = len-1
+	addiu s1, a1, -1			 #pos init izq-der = len-1
 	#ciclo principal
 checking:
 	#pasamos a minuscula el caracter actual de D

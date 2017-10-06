@@ -78,7 +78,7 @@ reading:
   #salto a lector de palabras
   la t9, get_word
   jal ra, t9
-	b return
+
 	beqz v0, read_error 		 #En caso de error en la lectura, se termina
   sw v0, WORD_POS($fp)     #Retorno de get_word [palabra para ver si es palidromo]
 
@@ -88,6 +88,7 @@ reading:
   #salto a funcion
   la t9, is_palindrome
   jalr t9
+	
   #retorno de is_palindrome [true | false]
   #false:
   beqz v0, free_word

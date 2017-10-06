@@ -51,18 +51,19 @@ fill_buffer:
   #escribimos el buffer de salida con la palabra recibida
   lw a0, WORD_POS($fp)  #cargamos la palabra
   add t0, a0, s1        #avanzamos hasta P[s1], pos actual word
-  lb s2, 0(t0)          #en s2 ponemos el caracter a escribir
+  lbu s2, 0(t0)          #en s2 ponemos el caracter a escribir
 
   lw a1, BUF_POS($fp)   #cargamos el buffer
-  add t1, a1, s0        #Avanzamos hasta b[s0], pos actual buffer
+  addu t1, a1, s0        #Avanzamos hasta b[s0], pos actual buffer
   sb s2, 0(t1)          #guardamos el char de la palabra en el buffer
 
-  addi s0, s0, 1        #avanzamos en el buffer
+  addiu s0, s0, 1        #avanzamos en el buffer
   la t0, obuf_size      #cargamos la var global
   lw t1, 0(t0)          #tomamos el valor (buffer size)
-  blt s0, t1, advance   #si hay lugar en el buffer, sumamos 1 a word_pos y seguimos
+  bltu s0, t1, advance   #si hay lugar en el buffer, sumamos 1 a word_pos y seguimos
 	#sino, tenemos que escribir el contenido del buffer en el archivo
   move s3, zero         #contador de bytes escritos
+
 write:
   #El SYS_write puede no escribir todo de una tirada asique se debe considerar
   #cuantos bytes se escribieron previamente
@@ -83,32 +84,37 @@ write:
   add s3, s3, v0        #retorno de SYS_write es bytes escritos
   la t0, obuf_size      #cargamos buff size (global)
   lw t1, 0(t0)          #tomamos el valor
-  bgt t1, s3, write     #si no se escribio todo, volvemos a escribir
+  blt s3, t1, write     #si no se escribio todo, volvemos a escribir
   #finalizamos el programa si se encontro el EOF previamente
-  la t0, write_file_end #var global
+	addu s0, zero, zero
+	la t0, write_file_end #var global
   lw t1, 0(t0)          #valor de write_file_end
   bnez t1, success      #se finaliza con exito en tal caso
 	#sino, seguimos
+
 advance:
   #En este caso, avanzamos en la palabra y si termino, cortamos
-  add s1, s1, 1           #avanzamos en la palabra una posicion
-  beq s2, 10, success     #si el caracter actual es un fin de palabra ('\n'), cortamos
-  b fill_buffer           #sino, seguimos leyendo y escribiendo el buffer
+  addiu s1, s1, 1           #avanzamos en la palabra una posicion
+  #beq s2, 10, success     #si el caracter actual es un fin de palabra ('\n'), cortamos
+	bne s2, 10, fill_buffer
+	b success          #sino, seguimos leyendo y escribiendo el buffer
 
 flush_EOF:
-  #Se define la cantidad de bytes a escribir como 0 y se finaliza
-  move s3, zero    #s3 almacena el largo del string a escribir (aqui, 0)
-  #el size del buffer pasara a ser la ultima posicion escrita
-  la t0, obuf_size #cargamos var global
-  sw s0, 0(t0)     #obuf_size = obuf_pos
-  #escribimos lo que quedo en el buffer y terminamos
-  b write
+	move s3, zero    #s3 almacena el largo del string a escribir (aqui, 0)
+	#el size del buffer pasara a ser la ultima posicion escrita
+	la t0, obuf_size #cargamos var global
+	sw s0, 0(t0)
+	b write
 
 success:
   li v0, SUCCESS
+	b return
+
 write_error:
   li v0, WRITE_FAIL
+
 return:
+
   #Se actualiza la posicion actual del buffer
   la t0, obuf_pos #carga de var global
   sw s0, 0(t0)    #almacenamiento de posicion

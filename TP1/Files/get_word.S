@@ -48,7 +48,6 @@ reading:
   #llamado a get_char
   la t9, get_char
   jal ra, t9
-	b return
   #control de error
   beq v0, -1, read_error
 
