@@ -114,7 +114,7 @@ write_error:
   li v0, WRITE_FAIL
 
 return:
-
+ 	#amigooo gato
   #Se actualiza la posicion actual del buffer
   la t0, obuf_pos #carga de var global
   sw s0, 0(t0)    #almacenamiento de posicion

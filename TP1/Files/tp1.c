@@ -194,6 +194,7 @@ int process_params(int argc, char** argv, char** input_file, char** output_file,
       printf ("non-option ARGV-elements: ");
       while(optind < argc) printf("%s ", argv[optind++]);
       putchar('\n');
+      printf("amigo\n" );
   }
   return SUCCESS;
 }
