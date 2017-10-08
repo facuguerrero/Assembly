@@ -18,12 +18,21 @@
 #define INPUT_OPEN_ERROR "An error ocurred while opening input file! Error: "
 #define OUTPUT_OPEN_ERROR "An error ocurred while opening output file! Error: "
 #define PALINDROME_ERROR "An error ocurred while checking for palindromes!"
+#define INPUT_MALLOC_MESSAJE "An error ocurred in malloc while reading from input!"
+#define OUTPUT_MALLOC_MESSAJE "An error ocurred in malloc while reading from output!"
+#define WRITE_MESSAJE "An error ocurred while writing in palindrome function!"
+#define READ_MESSAJE "An error ocurred while reading in palindrome function!"
 
 #define END_PROGRAM 8 //Parametros de entrada
 
 #define BAD_ARGUMENTS 4
 #define BAD_INPUT_PATH 5
 #define BAD_OUTPUT_PATH 6
+
+#define INPUT_MALLOC_ERROR 1
+#define OUTPUT_MALLOC_ERROR 2
+#define WRITE_ERROR 3
+#define READ_ERROR 4
 
 #define FAIL 1
 #define SUCCESS 0
@@ -93,6 +102,11 @@ int main(int argc, char** argv){
   int ret_val = palindrome(ifd, ib, ofd, ob);
   /*Vuelve a C*/
   if (ret_val > 0) fprintf(stderr, "%s\n", PALINDROME_ERROR);
+  if (ret_val == INPUT_MALLOC_ERROR) fprintf(stderr, "%s\n", INPUT_MALLOC_MESSAJE);
+  if (ret_val == OUTPUT_MALLOC_ERROR) fprintf(stderr, "%s\n", OUTPUT_MALLOC_MESSAJE);
+  if (ret_val == WRITE_ERROR) fprintf(stderr, "%s\n", WRITE_MESSAJE);
+  if (ret_val == READ_ERROR) fprintf(stderr, "%s\n", READ_MESSAJE);
+
   return 0;
 }
 
