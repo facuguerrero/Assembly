@@ -63,7 +63,36 @@
 			El trabajo se realizó en una máquina virtual \emph{NetBSD} (que simula tener un procesador
 			\emph{MIPS}) montada por el emulador \emph{GXemul} en \emph{Ubuntu 17.04}.
 		\subsection{Complicaciones}
-			LLENAR.
+			
+			Durante el desarrollo de el trabajo practico que esta siendo presentado, se presentaron muchas dificultades. \\
+			La primera de ellas fue al momento de usar funciones que se encontraban en módulos externos, es decir, cuando se quería llamar desde un módulo main a una función auxiliar. El problema en si, fue que al llamar solamente a una función externa el salto funcionaba, pero cuando desde un main se querían hacer 2 saltos a funciones externas, dicho programa arrojaba un \code{Segmentation Fault}. Por otro lado, al intentar debuggear el programa con \code{GDB}, no se obtenía ningún tipo de información ya que de \code{GDB} se obtenía la siguiente salida:
+			
+		\begin{verbatim}
+			Starting program: /root/TPs/TP1/tests/buffer/buffer
+
+			Program received signal SIGSEGV, Segmentation fault.
+			warning: Warning: GDB can't find the start of the function at 0x27bdffc8.
+
+   				GDB is unable to find the start of the function at 0x27bdffc8
+			and thus can't determine the size of that function's stack frame.
+				This means that GDB may be unable to access that stack frame, or
+			the frames below it.
+    		This problem is most likely caused by an invalid program counter or
+			stack pointer.
+    			However, if you think GDB should simply search farther back
+			from 0x27bdffc8 for code which looks like the beginning of a
+			function, you can increase the range of the search using the `set
+			heuristic-fence-post' command. 0x27bdffc8 in ?? ()
+		\end{verbatim}
+		
+		Luego de continuar un arduo análisis del problema, y con ayuda del grupo de consultas, se pudo advertir que el error se encontraba al momento de salvar el \code{ra} al inicio de una función, y restaurarlo al final de la misma.
+		\\
+		Una vez superada dicha complicación, se pudo integrar casi toda la funcionalidad del programa que se tenía hasta el momento. Como se menciono recientemente, lo primero que se hizo fue programar funciones por separado que realizaban las distintas tareas necesarias para el correcto funcionamiento del programa, las cuales leían una entrada con un \code{SYS$\_$READ}, el cual era guardado en un buffer definido en la sección de \code{$.$data del $.$S}. En este caso, el parámetro del syscall pasado en a2 (available space) también estaba hardcodeado y era el mismo tamaño del buffer. Una vez logrado esto, el siguiente paso fue introducir el buffer dinámico, que fue donde apareció la siguiente complicación. Entonces, lo que se quería hacr ahora es que el buffer fuera dinámico, es decir que recibiera por parámetro su tamaño y se llamara a mymalloc para obtener el puntero a el mismo. En este caso, el programa terminaba con un \code{Segmentation Fault}. Al intentar debuggear el programa con \code{GDB}, se obtuvo una salida muy similar a la presentada anteriormente, por lo que tampoco se pudo obtener información relevante sobre el error. Luego de realizar el análisis pertinente, pudimos arreglar el error que se encontraba al momento de realizar el pedido de memoria con la función \code{my$\_$malloc}.
+		\\
+		También se puede notar, que una complicación adicional fue la poca información que se obtenía de \code{GDB} cuando se corrían los programas que terminaban con \code{Segmentation Fault}.
+
+
+
 		\subsection{Desarrollo}
 			El programa fue implementado en lenguaje C y assembly MIPS.
 			
