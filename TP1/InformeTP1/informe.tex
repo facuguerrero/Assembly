@@ -94,11 +94,15 @@
 
 
 		\subsection{Desarrollo}
-			El programa fue implementado en lenguaje C y assembly MIPS.
-			
-			ESPECIFICACIONES DEL TP.			
-			
+			El programa fue implementado en lenguaje \code{C} y \code{assembly MIPS}.
+			\\
+			Dicho programa se inicia en \code{C}. Aquí se realiza la validación y el procesamiento de los parámetros recibidos, la apertura de archivos y su respectivo manejo de errores. Luego de tener los archivos abiertos, se obtiene el \code{FILE DESCRIPTOR} de los mismos con la función \code{fileno} y se pasa el control a la función \code{palindrome}, la cual esta implementada en \code{MIPS}. Por ultimo, en \code{C} también se realiza el manejo de errores, si los hubiese, una vez que el la función \code{palindrome} devuelve el control al programa en \code{c}.
+			\\
+			Entonces una vez que la función \code{palindrome} tiene el control del programa, esta se encarga de llamar a las distintas funciones distribuidas en módulos que se encargan de identificar, procesar e imprimir los componentes léxicos que resulten ser palíndromos.
+			La lógica que siguen dichas funciones es la que se presentara a continuación. Luego de almacenar los parámetros recibidos desde la función de \code{C}, la función \code{palindrome} reserva memoria para los buffer de entrada y salida a utilizar. Dicha operación, se lleva a cabo utilizando la función \code{my$\_$malloc} provista por la cátedra. Cabe aclarar, que también se realiza el manejo de errores en caso de ser necesario. Luego de tener el espacio de los buffers reservados, se llama a la función \code{get$\_$word} la cual se encarga de formar una palabra para que posteriormente sea procesada por \code{is$\_$palindrome}. La función \code{get$\_$word} llama a \code{get$\_$char} la cual se encarga de leer un \code{char} del buffer estático de entrada, y en el caso de que este vacío se encarga de volver a llenarlo. Luego de realizar dichas operaciones, se devuelve el carácter leído a \code{get$\_$word} la cual los acumula y verifica si dicho carácter recientemente leído es valido, o un espacio. En este ultimo caso, se escribe agrega un fin de linea al final de la palabra que esta próxima a procesarse. Contrariamente se vuelve a llamar a la función \code{get$\_$char} hasta completar una palabra.
+			\\
 			A continuación se detalla la documentación explicita de las funciones implementadas.
+		
 		\subsection{Manejo de errores}
 			A lo largo del desarrollo del programa se definen ciertos errores para manejar posibles fallas del
 			programa y así lograr un funcionamiento controlado y acorde. Estas son:
