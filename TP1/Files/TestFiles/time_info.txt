@@ -1,0 +1,29 @@
+Stress tests: [1Mb file]
+
+    ibuf_size == obuf_size
+      ibuf_size = 1    :: obuf_size = 1   ...OK.
+        Time elapsed: 74s.
+      ibuf_size = 128  :: obuf_size = 128 ...OK.
+        Time elapsed: 19s.
+      ibuf_size = 1024 :: obuf_size = 1024...OK.
+        Time elapsed: 17s.
+      ibuf_size = 4096 :: obuf_size = 4096...OK.
+        Time elapsed: 18s.
+
+    ibuf_size != obuf_size
+      ibuf_size = 128  :: obuf_size = 1   ...OK.
+        Time elapsed: 41s.
+      ibuf_size = 1    :: obuf_size = 128 ...OK.
+        Time elapsed: 50s.
+      ibuf_size = 1024 :: obuf_size = 128 ...OK.
+        Time elapsed: 18s.
+      ibuf_size = 128  :: obuf_size = 1024...OK.
+        Time elapsed: 18s.
+      ibuf_size = 4096 :: obuf_size = 1024...OK.
+        Time elapsed: 18s.
+      ibuf_size = 1024 :: obuf_size = 4096...OK.
+        Time elapsed: 18s.
+      ibuf_size = 4096 :: obuf_size = 128 ...OK.
+        Time elapsed: 18s.
+      ibuf_size = 128  :: obuf_size = 4096...OK.
+        Time elapsed: 18s.
