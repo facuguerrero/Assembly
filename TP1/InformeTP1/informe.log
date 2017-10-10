@@ -1,11 +1,11 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016/Debian) (preloaded format=pdflatex 2017.8.19)  10 OCT 2017 00:34
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016/Debian) (preloaded format=pdflatex 2017.9.23)  10 OCT 2017 10:22
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **informe.tex
 (./informe.tex
 LaTeX2e <2017/01/01> patch level 3
-Babel <3.9r> and hyphenation patterns for 83 language(s) loaded.
+Babel <3.9r> and hyphenation patterns for 35 language(s) loaded.
 (/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2014/09/29 v1.4h Standard LaTeX document class
 (/usr/share/texlive/texmf-dist/tex/latex/base/size10.clo
@@ -656,53 +656,53 @@ LaTeX Info: Redefining \% on input line 1.
  [1]
 [1] [2]
 LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <10> not available
-(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 155.
- [3] [4]
-Overfull \hbox (6.64212pt too wide) in paragraph at lines 328--330
+(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 159.
+ [3] [4] [5]
+Overfull \hbox (6.64212pt too wide) in paragraph at lines 332--334
 []| \OT1/cmtt/m/n/10 SUCCESS o WRITE$[]$FAIL \OT1/cmr/m/n/10 , en el se-gun-do 
 ca-so es-te va-lor es ve-ri-fi-ca-do y ma-ne-ja-do en la fun-ci^^Son \OT1/cmtt/
 m/n/10 palindrome 
  []
 
-[5] [6] [7]
-Underfull \hbox (badness 10000) in paragraph at lines 469--471
+[6] [7]
+Underfull \hbox (badness 10000) in paragraph at lines 473--475
 
  []
 
-<images/stressEquals.png, id=44, 611.28375pt x 321.2pt>
+[8] <images/stressEquals.png, id=47, 611.28375pt x 321.2pt>
 File: images/stressEquals.png Graphic file (type png)
 
 <use images/stressEquals.png>
-Package pdftex.def Info: images/stressEquals.png used on input line 500.
+Package pdftex.def Info: images/stressEquals.png used on input line 504.
 (pdftex.def)             Requested size: 496.33032pt x 260.79791pt.
- [8]
+
 <images/stressEqualsCloseUp.png, id=48, 611.28375pt x 321.2pt>
 File: images/stressEqualsCloseUp.png Graphic file (type png)
 
 <use images/stressEqualsCloseUp.png>
-Package pdftex.def Info: images/stressEqualsCloseUp.png used on input line 506.
+Package pdftex.def Info: images/stressEqualsCloseUp.png used on input line 510.
 
 (pdftex.def)             Requested size: 496.33032pt x 260.79791pt.
-
-<images/stressNonEquals.png, id=49, 723.70375pt x 459.7175pt>
+ [9 <./images/stressEquals.png>]
+<images/stressNonEquals.png, id=53, 723.70375pt x 459.7175pt>
 File: images/stressNonEquals.png Graphic file (type png)
 
 <use images/stressNonEquals.png>
-Package pdftex.def Info: images/stressNonEquals.png used on input line 514.
+Package pdftex.def Info: images/stressNonEquals.png used on input line 518.
 (pdftex.def)             Requested size: 496.33032pt x 315.28337pt.
- [9 <./images/stressEquals.png> <./images/stressEqualsCloseUp.png>] [10 <./imag
-es/stressNonEquals.png>] (./informe.aux
+ [10 <./images/stressEqualsCloseUp.png> <./images/stressNonEquals.png>] [11] (.
+/informe.aux
 LaTeX Info: Redefining \. on input line 6.
 LaTeX Info: Redefining \% on input line 6.
 ) ) 
 Here is how much of TeX's memory you used:
- 5376 strings out of 493013
- 70980 string characters out of 6135682
- 155679 words of memory out of 5000000
- 8832 multiletter control sequences out of 15000+600000
+ 5376 strings out of 494261
+ 70980 string characters out of 6161795
+ 152479 words of memory out of 5000000
+ 8633 multiletter control sequences out of 15000+600000
  9816 words of font info for 39 fonts, out of 8000000 for 9000
- 1141 hyphenation exceptions out of 8191
- 39i,7n,32p,1361b,384s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 398 hyphenation exceptions out of 8191
+ 39i,7n,32p,1400b,384s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></u
 sr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/sha
 re/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/share/te
@@ -715,10 +715,10 @@ lic/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsf
 onts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/c
 m/cmti10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt
 10.pfb>
-Output written on informe.pdf (12 pages, 297033 bytes).
+Output written on informe.pdf (13 pages, 298485 bytes).
 PDF statistics:
- 100 PDF objects out of 1000 (max. 8388607)
- 65 compressed objects within 1 object stream
+ 104 PDF objects out of 1000 (max. 8388607)
+ 68 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  21 words of extra memory for PDF output out of 10000 (max. 10000000)
 
