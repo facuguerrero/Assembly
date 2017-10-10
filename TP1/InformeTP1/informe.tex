@@ -515,13 +515,16 @@
     			\end{center}
     			\tab Este gráfico nos muestra datos interesantes y son los siguiente:
     			\begin{itemize}
-    				\item Es más importante tener un buffer de entrada que de salida, pues cuando este buffer tiene tamaño mayor a uno y el
-    				otro es uno (que es lo mismo que no tenerlo) los resultados son mejores que en el caso inverso (ver primeras 8
-    				columnas).
+    				\item En las primeras 8 columnas se puede observar que, en nuestro caso, es más importante tener un buffer de entrada
+    				que de salida; pues cuando el buffer de entrada toma valor y el buffer de salida tiene tamaño 1 (que es lo mismo que
+    				no tenerlo) los tiempos son mejores que en el caso inverso. De todas maneras, se debe decir que en las pruebas 
+    				realizadas un poco menos de un cuarto de los caracteres que se leen se escriben, por lo que tiene sentido la
+    				diferencia del aproximadamente $20\%$ que se observa (y si miramos el final del gráfico, el mejor resultado tiene
+    				relación $\frac{o_{}size}{i_{}size} = \frac{1}{4}$ [aunque podría no significar nada]).
     				\item Una vez que ambos buffers son de más (o igual a) 16 bytes, el rendimiento es muy parecido en todos los casos.
     				\item No se puede decir que cuanto más grande es el buffer de entrada mejor es el rendimiento ni se puede establecer
-    				una relación entre tamaños y rendimientos. Por ejemplo, la cupla (128, 64) es peor que (64, 128) pero (128, 32) es
-    				mejor que esta última.
+    				una relación entre tamaños y rendimientos más que la mencionada en el primer item. Por ejemplo, la cupla (128, 64) es
+    				peor que (64, 128) pero (128, 32) es mejor que esta última.
     			\end{itemize}
 
 	\section{Conclusiones}
