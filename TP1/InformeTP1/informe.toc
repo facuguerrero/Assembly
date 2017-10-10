@@ -7,7 +7,7 @@
 \contentsline {subsection}{\numberline {1.5}Manejo de errores}{2}
 \contentsline {subsubsection}{\numberline {1.5.1}Valores devueltos por la funci\IeC {\'o}n \texttt {main}}{3}
 \contentsline {subsection}{\numberline {1.6}Documentaci\IeC {\'o}n}{3}
-\contentsline {subsubsection}{\numberline {1.6.1}Funciones en assembly C}{3}
+\contentsline {subsubsection}{\numberline {1.6.1}Funciones en C}{3}
 \contentsline {subsubsection}{\numberline {1.6.2}Funciones en assembly MIPS}{4}
 \contentsline {section}{\numberline {2}Ejecuci\IeC {\'o}n}{6}
 \contentsline {subsection}{\numberline {2.1}Instrucciones para la compilaci\IeC {\'o}n}{6}
@@ -15,14 +15,8 @@
 \contentsline {subsection}{\numberline {2.3}Pruebas}{6}
 \contentsline {subsubsection}{\numberline {2.3.1}Prueba 1}{6}
 \contentsline {subsubsection}{\numberline {2.3.2}Prueba 2}{6}
-\contentsline {subsubsection}{\numberline {2.3.3}Prueba 3}{6}
-\contentsline {subsubsection}{\numberline {2.3.4}Prueba 4}{7}
-\contentsline {subsubsection}{\numberline {2.3.5}Prueba 5}{7}
-\contentsline {subsubsection}{\numberline {2.3.6}Prueba 6}{7}
-\contentsline {subsubsection}{\numberline {2.3.7}Prueba 7}{7}
-\contentsline {subsubsection}{\numberline {2.3.8}Prueba 8}{8}
-\contentsline {subsubsection}{\numberline {2.3.9}Prueba 9}{8}
-\contentsline {subsubsection}{\numberline {2.3.10}Prueba 10}{8}
-\contentsline {subsubsection}{\numberline {2.3.11}Prueba 11}{9}
-\contentsline {subsubsection}{\numberline {2.3.12}Prueba 12}{9}
-\contentsline {section}{\numberline {3}Conclusiones}{9}
+\contentsline {subsubsection}{\numberline {2.3.3}Prueba 3}{7}
+\contentsline {subsubsection}{\numberline {2.3.4}Prueba 4}{8}
+\contentsline {subsubsection}{\numberline {2.3.5}Prueba 5}{8}
+\contentsline {subsection}{\numberline {2.4}Pruebas de Stress}{8}
+\contentsline {section}{\numberline {3}Conclusiones}{10}
