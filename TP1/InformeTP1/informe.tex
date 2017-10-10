@@ -537,5 +537,9 @@
 		de archivos es una de las tareas más lentas que se pueden realizar pero que es muy fácil de resolver con el simple hecho de 
 		realizar lecturas de más de un byte y almacenar la información en un buffer para luego acceder rápidamente, sin volver al 
 		archivo. Por otro lado, también es importante destacar que esta mejora tiene un tope y no es 'cuanto más guardo más rápido
-		va', sino que llega un punto (cierto tamaño de buffer) en que ya no se puede obtener mayor performance con este método.
+		va', sino que llega un punto (cierto tamaño de buffer) en que ya no se puede obtener mayor performance con este método. \\
+		\tab Por otro lado, notamos que es importante conocer la forma en la que se pueden pasar variables de tipo \tab{struct} en
+		MIPS Assembler, pues es una buena manera de evitar las variables globales que se han utilizado durante este trabajo manteniendo
+		las mismas en una estructura cuyo puntero se pasa como parámetro de las funciones que utilicen dichas variables, modificarlas
+		en las mismas y volver a guardarlas en la estructura.
 \end{document}
