@@ -1,11 +1,11 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016/Debian) (preloaded format=pdflatex 2017.9.23)  10 OCT 2017 10:22
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016/Debian) (preloaded format=pdflatex 2017.8.19)  10 OCT 2017 16:45
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **informe.tex
 (./informe.tex
 LaTeX2e <2017/01/01> patch level 3
-Babel <3.9r> and hyphenation patterns for 35 language(s) loaded.
+Babel <3.9r> and hyphenation patterns for 83 language(s) loaded.
 (/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2014/09/29 v1.4h Standard LaTeX document class
 (/usr/share/texlive/texmf-dist/tex/latex/base/size10.clo
@@ -665,7 +665,7 @@ m/n/10 palindrome
  []
 
 [6] [7]
-Underfull \hbox (badness 10000) in paragraph at lines 473--475
+Underfull \hbox (badness 10000) in paragraph at lines 474--476
 
  []
 
@@ -673,14 +673,14 @@ Underfull \hbox (badness 10000) in paragraph at lines 473--475
 File: images/stressEquals.png Graphic file (type png)
 
 <use images/stressEquals.png>
-Package pdftex.def Info: images/stressEquals.png used on input line 504.
+Package pdftex.def Info: images/stressEquals.png used on input line 505.
 (pdftex.def)             Requested size: 496.33032pt x 260.79791pt.
 
 <images/stressEqualsCloseUp.png, id=48, 611.28375pt x 321.2pt>
 File: images/stressEqualsCloseUp.png Graphic file (type png)
 
 <use images/stressEqualsCloseUp.png>
-Package pdftex.def Info: images/stressEqualsCloseUp.png used on input line 510.
+Package pdftex.def Info: images/stressEqualsCloseUp.png used on input line 511.
 
 (pdftex.def)             Requested size: 496.33032pt x 260.79791pt.
  [9 <./images/stressEquals.png>]
@@ -688,7 +688,7 @@ Package pdftex.def Info: images/stressEqualsCloseUp.png used on input line 510.
 File: images/stressNonEquals.png Graphic file (type png)
 
 <use images/stressNonEquals.png>
-Package pdftex.def Info: images/stressNonEquals.png used on input line 518.
+Package pdftex.def Info: images/stressNonEquals.png used on input line 519.
 (pdftex.def)             Requested size: 496.33032pt x 315.28337pt.
  [10 <./images/stressEqualsCloseUp.png> <./images/stressNonEquals.png>] [11] (.
 /informe.aux
@@ -696,12 +696,12 @@ LaTeX Info: Redefining \. on input line 6.
 LaTeX Info: Redefining \% on input line 6.
 ) ) 
 Here is how much of TeX's memory you used:
- 5376 strings out of 494261
- 70980 string characters out of 6161795
- 152479 words of memory out of 5000000
- 8633 multiletter control sequences out of 15000+600000
+ 5376 strings out of 493013
+ 70980 string characters out of 6135682
+ 155679 words of memory out of 5000000
+ 8832 multiletter control sequences out of 15000+600000
  9816 words of font info for 39 fonts, out of 8000000 for 9000
- 398 hyphenation exceptions out of 8191
+ 1141 hyphenation exceptions out of 8191
  39i,7n,32p,1400b,384s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></u
 sr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/sha
@@ -715,7 +715,7 @@ lic/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsf
 onts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/c
 m/cmti10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt
 10.pfb>
-Output written on informe.pdf (13 pages, 298485 bytes).
+Output written on informe.pdf (13 pages, 298570 bytes).
 PDF statistics:
  104 PDF objects out of 1000 (max. 8388607)
  68 compressed objects within 1 object stream
