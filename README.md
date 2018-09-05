@@ -14,3 +14,4 @@ Complete implementation of a simple script in Assembly MIPS
 ##### Programa en Assembly MIPS
 
 Implementación completa de un programa sencillo en assembly MIPS.
+El programa se encarga de detectar palabras palindromas. Además, se utiliza un buffer para reducir accesos a memoria.
